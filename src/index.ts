@@ -3,12 +3,14 @@ dotenv.config();
 
 import express from "express";
 import { ConnectDB } from "./db/db";
+import auth from "./routes/authRoutes";
 
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+app.use("/authRoutes",auth);
 
 async function startServer() {
     try {
