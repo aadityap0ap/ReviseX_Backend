@@ -1,0 +1,43 @@
+{
+  "name": "revisex_backend",
+  "version": "1.0.0",
+  "description": "ReviseX helps you remember what you solve. Track DSA problems, review them at optimal intervals, and build long-term intuition instead of short-term memory.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "concurrently \"tsc -w\" \"nodemon --watch dist dist/index.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aadityap0ap/ReviseX_Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/aadityap0ap/ReviseX_Backend/issues"
+  },
+  "homepage": "https://github.com/aadityap0ap/ReviseX_Backend#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.8.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.1.2",
+    "concurrently": "^10.0.4",
+    "nodemon": "^3.1.14",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^7.0.2"
+  }
+}
