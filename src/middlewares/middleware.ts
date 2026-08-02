@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-
+import dotenv from "dotenv";
+dotenv.config();
 
 interface JwtPayload {
     id: string;
@@ -31,14 +32,16 @@ export function authMiddleware(
         const token = authHeader.split(" ")[1];
         const decoded = jwt.verify(
             token,
-            process.env.JWT_SECRET!
+            process.env.JWT_USER_PASSWORD!
         ) as JwtPayload;
         (req as any).userId = decoded.id;
         next();
-
-    } catch (error) {
+    
+    } catch (err) {
+        console.log(err);
         return res.status(401).json({
-            message: "Invalid or expired token"
+            message: "Invalid or expired token",
+            
         });
     }
 }
