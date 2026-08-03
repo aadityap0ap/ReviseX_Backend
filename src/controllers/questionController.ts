@@ -65,6 +65,31 @@ export const allQuestions = async(req : Request, res : Response) => {
     catch(error){
         return res.status(500).json({
             message : "Internal Server Error and Backend Failure!"
+        });
+    }
+};
+
+export const getOneQuestion = async(req : Request, res: Response) => {
+    try{
+        const userId = (req as any).userId;
+        const questionId = req.params.id;
+        const existingQuestion = await question.findOne({
+            _id : questionId,
+            userId
+        });
+        if(!existingQuestion){
+            return res.status(400).json({
+                message : "This question is not found"
+            });
+        }
+        return res.status(200).json({
+            message : "The Question is",
+            data : existingQuestion
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "Internal Server Error and BackeEnd Failure!"
         })
     }
 }
