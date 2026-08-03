@@ -141,5 +141,30 @@ export const updateQuestion = async(req : Request,res:Response) => {
             message : "Internal Server Error and BackEnd Failure!"
         });
     }
-}
+};
+
+export const deleteQuestion = async(req : Request,res : Response) => {
+    try{
+        const userId = (req as any).userId;
+        const questionId = req.params.id;
+        const existingQuestion = await question.findOne({
+            _id : questionId,
+            userId
+        });
+        if(!existingQuestion){
+            return res.status(400).json({
+                message : "Question with this id not found!"
+            });
+        }
+        await question.findByIdAndDelete(questionId);
+        return res.status(200).json({
+            message : "Question Deleted Successfully!"
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "Internal Server Error or Backend Failure!"
+        });
+    }
+};
 
