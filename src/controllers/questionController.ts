@@ -90,7 +90,56 @@ export const getOneQuestion = async(req : Request, res: Response) => {
     catch(error){
         return res.status(500).json({
             message : "Internal Server Error and BackeEnd Failure!"
+        });
+    }
+};
+
+export const updateQuestion = async(req : Request,res:Response) => {
+    try{
+        const userId = (req as any).userId;
+        const questionId = req.params.id;
+        const {
+            title,
+            platform,
+            problemLink,
+            difficulty,
+            topic,
+            subtopic,
+            notes,
+            intuition
+        } = req.body;
+
+        const existingQuestion = await question.findOne({
+            _id : questionId,
+            userId
+        });
+
+        if(!existingQuestion){
+            return res.status(400).json({
+                message : "The question is not found!"
+            });
+        }
+
+        existingQuestion.title = title ?? existingQuestion.title;
+        existingQuestion.platform = platform ?? existingQuestion.platform;
+        existingQuestion.problemLink = problemLink ?? existingQuestion.problemLink;
+        existingQuestion.difficulty = difficulty ?? existingQuestion.difficulty;
+        existingQuestion.topic = topic ?? existingQuestion.topic;
+        existingQuestion.subtopic = subtopic ?? existingQuestion.subtopic;
+        existingQuestion.notes = notes ?? existingQuestion.notes;
+        existingQuestion.intuition = intuition ?? existingQuestion.intuition;
+
+        await existingQuestion.save();
+
+        return res.status(200).json({
+            message : "The Updates are executed SuccessFully!",
+            data : existingQuestion
         })
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "Internal Server Error and BackEnd Failure!"
+        });
     }
 }
 
