@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { question } from "../db/db";
+import { question, user } from "../db/db";
 
 export const addQuestion  = async(req: Request,res:Response) => {
     try{
@@ -50,4 +50,22 @@ export const addQuestion  = async(req: Request,res:Response) => {
             message : "Internal Server Error and BackeEnd Failure"
         });
     }
+};
+
+export const allQuestions = async(req : Request, res : Response) => {
+    try{
+        const userId = (req as any).userId;
+        const Questions = await question.find({userId});
+        return res.status(200).json({
+            message : "Your Questions are as followed",
+            count : Questions.length,
+            data : Questions
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "Internal Server Error and Backend Failure!"
+        })
+    }
 }
+
