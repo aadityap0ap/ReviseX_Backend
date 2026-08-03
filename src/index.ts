@@ -5,7 +5,7 @@ import express from "express";
 import { ConnectDB } from "./db/db";
 import auth from "./routes/authRoutes";
 import profile from "./routes/userRoutes";
-
+import questions from "./routes/questionRoutes"
 
 const app = express();
 const PORT = 3000;
@@ -13,6 +13,7 @@ const PORT = 3000;
 app.use(express.json());
 app.use("/authRoutes",auth);
 app.use("/userRoutes",profile);
+app.use("/questionRoutes",questions);
 
 async function startServer() {
     try {
