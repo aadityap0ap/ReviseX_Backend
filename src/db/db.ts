@@ -39,7 +39,110 @@ const userSchema = new mongoose.Schema({
     highestStreak : {
         type : Number,
         default : 0
+    }    
+    },
+    {
+        timestamps: true,
     }
-});
+);
+
+
+const questionSchema = new mongoose.Schema(
+  {
+    // Reference to the user who owns this question
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
+    // Question title
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    // Coding platform
+    platform: {
+      type: String,
+      enum: ["LeetCode", "Codeforces", "CodeChef", "AtCoder", "GeeksforGeeks", "Other"],
+      required: true,
+    },
+
+    // Direct link to the problem
+    problemLink: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    // Difficulty level
+    difficulty: {
+      type: String,
+      enum: ["Easy", "Medium", "Hard"],
+      required: true,
+    },
+
+    // Main topic
+    topic: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    // Sub-topic (optional)
+    subtopic: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // User's personal notes
+    notes: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // Key intuition behind the solution
+    intuition: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // Current revision status
+    status: {
+      type: String,
+      enum: ["Pending", "Learning", "Revising", "Mastered"],
+      default: "Pending",
+    },
+
+    // Current revision stage (0 → 1 → 2 → ...)
+    revisionLevel: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    // Next scheduled revision
+    nextRevisionDate: {
+      type: Date,
+      default: null,
+    },
+
+    // Last revision date
+    lastRevisionDate: {
+      type: Date,
+      default: null,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 
 export const user = mongoose.model("user",userSchema);
+export const question = mongoose.model("question",questionSchema);
