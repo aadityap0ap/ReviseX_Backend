@@ -54,3 +54,32 @@ catch(error){
     });
 }
 }
+
+
+export const getTodaysRevision = async(req:Request,res:Response) => {
+    try{
+        const userId = (req as any).userId;
+        const today = new Date();
+        // Find all questions that are due
+        // for revision today or are overdue
+        const revisions = await question.find({
+            userId,
+            nextRevisionDate: {
+                $lte: today
+            }
+        }).sort({
+            nextRevisionDate: 1
+        });
+        return res.status(200).json({
+            message : "The questions to be revisied!",
+            count: revisions.length,
+            data : revisions
+        });
+
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "Internal Server Error || BackEnd Crashed"
+        });
+    }
+}
