@@ -7,6 +7,7 @@ import auth from "./routes/authRoutes";
 import profile from "./routes/userRoutes";
 import questions from "./routes/questionRoutes";
 import revise from "./routes/revisionRoutes";
+import dashboard from "./routes/dashboardRoutes";
 
 const app = express();
 const PORT = 3000;
@@ -16,6 +17,7 @@ app.use("/authRoutes",auth);
 app.use("/userRoutes",profile);
 app.use("/questionRoutes",questions);
 app.use("/reviseQuestions",revise);
+app.use("/dashboardRoutes",dashboard);
 
 async function startServer() {
     try {
