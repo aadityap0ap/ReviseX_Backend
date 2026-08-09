@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 export async function ConnectDB() {
     await mongoose.connect(process.env.MONGO_URL!);
@@ -143,6 +143,32 @@ const questionSchema = new mongoose.Schema(
   }
 );
 
+const revisonSchema = new mongoose.Schema({
+  userId : {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : "user",
+    require : true
+  },
+  questionId : {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : "question",
+    require : true
+  },
+  revisonLevel : {
+    type : Number,
+    require : true
+  },
+  completedAt : {
+    type : Date,
+    default : Date.now
+  }
+},
+{
+  timestamps : true
+}
+);
+
 
 export const user = mongoose.model("user",userSchema);
 export const question = mongoose.model("question",questionSchema);
+export const revision = mongoose.model("revision",revisonSchema);
