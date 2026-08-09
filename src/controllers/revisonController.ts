@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { question, revision } from "../db/db";
+import { question, revisionHistory } from "../db/db";
 import { REVISION_INTERVALS } from "../utils/revisonIntervals";
 
 export const reviseQuestion = async(req:Request,res:Response) => {
@@ -43,7 +43,7 @@ export const reviseQuestion = async(req:Request,res:Response) => {
 
     await existingQuestion.save();
 
-    const history = await revision.create({
+    const history = await revisionHistory.create({
         userId,
         questionId : existingQuestion._id,
         revisonLevel : currentLevel,
@@ -89,5 +89,28 @@ export const getTodaysRevision = async(req:Request,res:Response) => {
         return res.status(500).json({
             message : "Internal Server Error || BackEnd Crashed"
         });
+    }
+}
+
+export const getRevisionHistory = async (req:Request,res:Response) => {
+    try{
+        const userId = (req as any).userId;
+        
+        const history = await revisionHistory
+            .find({ userId })
+            .sort({
+                completedAt: -1
+            });
+
+        return res.status(200).json({
+            message : "The revison history as follows!",
+            count : history.length,
+            data : history
+        });
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "Internal Server Error || Backend Crashed!"
+        })
     }
 }

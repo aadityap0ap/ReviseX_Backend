@@ -171,4 +171,4 @@ const revisonSchema = new mongoose.Schema({
 
 export const user = mongoose.model("user",userSchema);
 export const question = mongoose.model("question",questionSchema);
-export const revision = mongoose.model("revision",revisonSchema);
+export const revisionHistory = mongoose.model("revision",revisonSchema);
