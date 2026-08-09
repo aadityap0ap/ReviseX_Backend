@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 export async function ConnectDB() {
     await mongoose.connect(process.env.MONGO_URL!);
