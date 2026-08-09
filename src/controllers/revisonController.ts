@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { question } from "../db/db";
+import { question, revision } from "../db/db";
 import { REVISION_INTERVALS } from "../utils/revisonIntervals";
 
 export const reviseQuestion = async(req:Request,res:Response) => {
@@ -43,9 +43,17 @@ export const reviseQuestion = async(req:Request,res:Response) => {
 
     await existingQuestion.save();
 
+    const history = await revision.create({
+        userId,
+        questionId : existingQuestion._id,
+        revisonLevel : currentLevel,
+        completedAt : today
+    })
+
     return res.status(200).json({
         message : "Revison Done Successfully!",
-        data : existingQuestion
+        data : existingQuestion,
+        history
     });
 }
 catch(error){
