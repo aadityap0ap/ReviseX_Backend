@@ -9,6 +9,7 @@ import questions from "./routes/questionRoutes";
 import revise from "./routes/revisionRoutes";
 import dashboard from "./routes/dashboardRoutes";
 import stats from "./routes/statisticsRoutes";
+import calenderRoutes  from "./routes/calenderRoutes";
 
 const app = express();
 const PORT = 3000;
@@ -20,6 +21,7 @@ app.use("/questionRoutes",questions);
 app.use("/reviseQuestions",revise);
 app.use("/dashboardRoutes",dashboard);
 app.use("/statesRoutes",stats);
+app.subscribe("/revision",calenderRoutes);
 
 async function startServer() {
     try {
