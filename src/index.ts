@@ -3,24 +3,24 @@ dotenv.config();
 
 import express from "express";
 import { ConnectDB } from "./db/db";
-import auth from "./routes/authRoutes";
-import profile from "./routes/userRoutes";
-import questions from "./routes/questionRoutes";
-import revise from "./routes/revisionRoutes";
-import dashboard from "./routes/dashboardRoutes";
-import stats from "./routes/statisticsRoutes";
+import authRoutes from "./routes/authRoutes";
+import profileRoutes from "./routes/userRoutes";
+import questionsRoutes from "./routes/questionRoutes";
+import reviseRoutes from "./routes/revisionRoutes";
+import dashboardRoutes from "./routes/dashboardRoutes";
+import statsRoutes from "./routes/statisticsRoutes";
 import calenderRoutes  from "./routes/calenderRoutes";
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-app.use("/authRoutes",auth);
-app.use("/userRoutes",profile);
-app.use("/questionRoutes",questions);
-app.use("/reviseQuestions",revise);
-app.use("/dashboardRoutes",dashboard);
-app.use("/statesRoutes",stats);
+app.use("/auth",authRoutes);
+app.use("/user",profileRoutes);
+app.use("/question",questionsRoutes);
+app.use("/revise",reviseRoutes);
+app.use("/dashboard",dashboardRoutes);
+app.use("/states",statsRoutes);
 app.subscribe("/revision",calenderRoutes);
 
 async function startServer() {
