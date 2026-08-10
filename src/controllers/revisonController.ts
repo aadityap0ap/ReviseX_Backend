@@ -117,3 +117,83 @@ export const getRevisionHistory = async (req:Request,res:Response) => {
         })
     }
 }
+
+export const getQuestions = async(req:Request,res:Response) => {
+    try{
+        const userId = (req as any).userId;
+        const{
+            search,
+            topics,
+            difficulty,
+            platform,
+            status
+        } = req.query;
+
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 10;
+
+        if(page < 1 || limit < 1){
+            return res.status(400).json({
+                message : "Page and limit must be greater than 0"
+            });
+        }
+
+        const filter : any =  {
+            userId
+        }
+
+        if(search){
+            filter.title = {
+                $regex: search,
+                $options: "i"
+            };
+        }
+
+        if(topics){
+            filter.topics = topics
+        }
+
+        if(difficulty){
+            filter.difficulty = difficulty
+        }
+
+        if(platform){
+            filter.platform = platform
+        }
+
+        if(status){
+            filter.status = status
+        }
+
+        const skip = (page - 1) * limit;
+        const sortOption = {
+            createdAt : -1 as const
+        };
+
+        const totalQuestions = await question.countDocuments(filter);
+        const questions = await question
+        .find(filter)
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limit);
+        
+        const totalPages = Math.ceil(totalQuestions / limit);
+
+        return res.status(200).json({
+            message : "Message Fetched Successfully",
+            data : questions,
+            pagination :{
+                currentPage : page,
+                limit : limit,
+                totalQuestions : totalQuestions,
+                totalPages : totalPages
+            }
+        });
+
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "Internal Server Error || Backend Crashed"
+        });
+    }
+}
