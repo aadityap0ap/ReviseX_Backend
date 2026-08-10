@@ -1,6 +1,7 @@
 import { Request,Response } from "express";
 import { question, revisionHistory } from "../db/db";
 import { REVISION_INTERVALS } from "../utils/revisonIntervals";
+import {updateUserStreak} from "../services/streakServices";
 
 export const reviseQuestion = async(req:Request,res:Response) => {
     try{
@@ -48,7 +49,9 @@ export const reviseQuestion = async(req:Request,res:Response) => {
         questionId : existingQuestion._id,
         revisonLevel : currentLevel,
         completedAt : today
-    })
+    });
+
+    const streak =  await updateUserStreak(userId);
 
     return res.status(200).json({
         message : "Revison Done Successfully!",
