@@ -8,6 +8,7 @@ import profile from "./routes/userRoutes";
 import questions from "./routes/questionRoutes";
 import revise from "./routes/revisionRoutes";
 import dashboard from "./routes/dashboardRoutes";
+import stats from "./routes/statisticsRoutes";
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +19,7 @@ app.use("/userRoutes",profile);
 app.use("/questionRoutes",questions);
 app.use("/reviseQuestions",revise);
 app.use("/dashboardRoutes",dashboard);
+app.use("/statesRoutes",stats);
 
 async function startServer() {
     try {
