@@ -4,6 +4,6 @@ import { getRevisionCalender } from "../controllers/calenderController";
 
 const router = express.Router();
 
-router.get("/calender",authMiddleware,getRevisionCalender);
+router.get("/calendar",authMiddleware,getRevisionCalender);
 
 export default router;

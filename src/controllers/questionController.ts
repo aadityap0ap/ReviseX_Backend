@@ -55,12 +55,72 @@ export const addQuestion  = async(req: Request,res:Response) => {
 export const allQuestions = async(req : Request, res : Response) => {
     try{
         const userId = (req as any).userId;
-        const Questions = await question.find({userId});
+        const {
+            search,
+            topic,
+            difficulty,
+            platform,
+            status,
+            page,
+            limit,
+        } = req.query;
+
+        const currentPage = Number(page) || 1;
+        const pageLimit = Number(limit) || 10;
+        if (currentPage < 1 || pageLimit < 1) {
+            return res.status(400).json({
+                message: "Page and limit must be greater than 0",
+            });
+        }
+
+        const filter: any = { userId };
+
+        if (search) {
+            filter.title = {
+                $regex: String(search),
+                $options: "i",
+            };
+        }
+
+        if (topic) {
+            filter.topic = String(topic);
+        }
+
+        if (difficulty) {
+            filter.difficulty = String(difficulty);
+        }
+
+        if (platform) {
+            filter.platform = String(platform);
+        }
+
+        if (status) {
+            filter.status = String(status);
+        }
+
+        const skip = (currentPage - 1) * pageLimit;
+        const sortOption = { createdAt: -1 as const };
+
+        const totalQuestions = await question.countDocuments(filter);
+        const questions = await question
+            .find(filter)
+            .sort(sortOption)
+            .skip(skip)
+            .limit(pageLimit);
+
+        const totalPages = Math.ceil(totalQuestions / pageLimit);
+
         return res.status(200).json({
             message : "Your Questions are as followed",
-            count : Questions.length,
-            data : Questions
-        })
+            count : questions.length,
+            data : questions,
+            pagination: {
+                currentPage,
+                limit: pageLimit,
+                totalQuestions,
+                totalPages,
+            },
+        });
     }
     catch(error){
         return res.status(500).json({

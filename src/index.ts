@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import cors from "cors";
 import express from "express";
 import { ConnectDB } from "./db/db";
 import authRoutes from "./routes/authRoutes";
@@ -9,19 +10,20 @@ import questionsRoutes from "./routes/questionRoutes";
 import reviseRoutes from "./routes/revisionRoutes";
 import dashboardRoutes from "./routes/dashboardRoutes";
 import statsRoutes from "./routes/statisticsRoutes";
-import calenderRoutes  from "./routes/calenderRoutes";
+import calenderRoutes from "./routes/calenderRoutes";
 
 const app = express();
 const PORT = 3000;
 
+app.use(cors());
 app.use(express.json());
 app.use("/auth",authRoutes);
 app.use("/user",profileRoutes);
 app.use("/question",questionsRoutes);
-app.use("/revise",reviseRoutes);
+app.use("/revision",reviseRoutes);
 app.use("/dashboard",dashboardRoutes);
 app.use("/states",statsRoutes);
-app.subscribe("/revision",calenderRoutes);
+app.use("/revision",calenderRoutes);
 
 async function startServer() {
     try {
